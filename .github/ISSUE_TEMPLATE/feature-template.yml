@@ -1,15 +1,8 @@
----
-name: Feature Template
-about: Feature Issue Template
-title: ''
-labels: Feature
-assignees: ''
-
----
-
 name: "✨ Feature"
 description: "새로운 기능 추가"
 labels: ["feature"]
+assignees: []
+
 body:
   - type: textarea
     attributes:
