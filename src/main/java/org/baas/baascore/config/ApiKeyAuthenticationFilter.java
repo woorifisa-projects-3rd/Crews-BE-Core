@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import org.baas.baascore.service.SubscribeService;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,14 +40,14 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
     );
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
         String path = request.getRequestURI();
         // EXCLUDE_URLS에 포함된 경로로 시작하면 필터를 적용하지 않음
         return EXCLUDE_URLS.stream().anyMatch(path::startsWith);
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
         String accessKey = request.getHeader("X-ACCESS-KEY");
@@ -59,11 +60,11 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } else {
                 // 인증 실패 시 예외 발생
-                throw new BadCredentialsException("Invalid API Keys");
+                throw new BadCredentialsException("유효하지 않은 API 키입니다.");
             }
         } else {
             // API 키가 제공되지 않은 경우 예외 발생
-            throw new BadCredentialsException("API Keys are missing");
+            throw new BadCredentialsException("API 키가 누락되었습니다.");
         }
 
         filterChain.doFilter(request, response);
