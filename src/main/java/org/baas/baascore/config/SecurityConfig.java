@@ -24,7 +24,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(apiKeyAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .anonymous(anonymous -> anonymous.disable());
+                .anonymous(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
