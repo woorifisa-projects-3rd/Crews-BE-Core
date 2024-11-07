@@ -1,54 +1,57 @@
 package org.baas.baascore.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.baas.baascore.util.AccountType;
+import org.baas.baascore.util.BaseTimeEntity;
 import org.baas.baascore.util.CurrencyType;
 
-import java.math.BigInteger;
-import java.time.LocalDate;
+import java.math.BigDecimal;
 
+/***
+ * Baas Core 의 계좌 엔티티
+ */
 @Getter
 @Entity
-@Table(name = "core_acount")
-public class Account {
+@Table(name = "core_account")
+public class Account extends BaseTimeEntity {
+    // 계좌의 고유 식별자
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 한 계좌는 한 명의 고객과만 연결됨
-    @OneToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    // 한 고객은 여러 계좌를 소유할수있음
+    // 계좌 소유 고객 정보
+    @ManyToOne
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
     private Customer customer;
 
     // 한 계좌는 하나의 은행 코드와만 연결됨
+    // 계좌가 소속된 은행 정보
     @OneToOne
-    @JoinColumn(name = "bank_code_id", referencedColumnName = "id")
-    private BankCode bankCode;
+    @JoinColumn(name = "bank_code_id", referencedColumnName = "id", nullable = false)
+    private Bank bank;
 
-    @Column(name = "account_number")
+    // 계좌 번호, 시스템 내에서 고유함
+    @Column(name = "account_number", nullable = false, unique = true)
     private String accountNumber;
 
-    @Column(name = "balance")
-    private BigInteger balance;
+    // 계좌 잔액, 0 이상만 허용됨
+    @Column(name = "balance", nullable = false)
+    private BigDecimal balance;
 
-
-    @Column(name = "created_at")
-    private LocalDate createdAt;
-
-    @Column(name = "upadted_at")
-    private LocalDate upadtedAt;
-
-    @Enumerated(EnumType.STRING) // ENUM을 문자열로 저장
+    // 계좌가 사용하는 통화 종류 (예: USD, KRW)
+    @Enumerated(EnumType.STRING)
     @Column(name = "currency")
     private CurrencyType currencyType;
 
-    @Enumerated(EnumType.STRING) // ENUM을 문자열로 저장
+    // 계좌 유형 (예: 개인, 모임)
+    @Enumerated(EnumType.STRING)
     @Column(name = "account_type")
-    private CurrencyType accountType;
+    private AccountType accountType;
 
-    @Column(name = "fintech_use_num")
+    // 클라이언트(서비스)와 사용자(고객) 쌍의 식별번호
+    @Column(name = "fintech_use_num",nullable = false, unique = true)
     private String fintechUseNum;
+
 }
