@@ -97,6 +97,6 @@ public class SubscribeService {
 
     // 유효한 사업자등록번호인지 확인하는 메서드
     private boolean isValidBusinessNumber(String businessNum) {
-        return !businessNum.isEmpty();
+        return businessNum != null && businessNum.matches("\\d{10}");
     }
 }
