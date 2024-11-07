@@ -1,0 +1,16 @@
+name: Move Issue to To Do
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  move_to_todo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move issue to '할 일' column
+        uses: actions/add-to-project@v0.2.1
+        with:
+          project-url: '<Project_URL>'
+          column-name: '할 일'
+          token: ${{ secrets.GITHUB_TOKEN }}

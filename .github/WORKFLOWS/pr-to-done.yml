@@ -1,0 +1,17 @@
+name: Move Issue to Done on PR Merge
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  move_to_done:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Move linked issue to '완료' column
+        uses: actions/add-to-project@v0.2.1
+        with:
+          project-url: '<Project_URL>'
+          column-name: '완료'
+          token: ${{ secrets.GITHUB_TOKEN }}

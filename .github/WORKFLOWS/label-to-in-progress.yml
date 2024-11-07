@@ -1,0 +1,17 @@
+name: Move Issue to In Progress on Label
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  move_to_in_progress:
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'in progress'
+    steps:
+      - name: Move issue to '진행중' column
+        uses: actions/add-to-project@v0.2.1
+        with:
+          project-url: '<Project_URL>'
+          column-name: '진행중'
+          token: ${{ secrets.GITHUB_TOKEN }}

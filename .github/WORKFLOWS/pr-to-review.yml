@@ -1,0 +1,16 @@
+name: Move Issue to Review on PR Creation
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  move_to_review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move linked issue to '리뷰' column
+        uses: actions/add-to-project@v0.2.1
+        with:
+          project-url: '<Project_URL>'
+          column-name: '리뷰'
+          token: ${{ secrets.GITHUB_TOKEN }}
