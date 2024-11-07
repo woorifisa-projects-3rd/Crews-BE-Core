@@ -1,42 +1,52 @@
 package org.baas.baascore.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.baas.baascore.util.BaseTimeEntity;
 
 import java.time.LocalDate;
 
+/**
+ * 고객 정보를 관리하는 Customer 엔티티
+ */
 @Getter
 @Entity
 @Table(name = "bank_member")
-public class Customer {
+public class Customer extends BaseTimeEntity {
+    // 고객 고유 식별자
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email")
+    // 고객 이메일, 시스템 내에서 고유해야 함
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "name")
+    // 고객 이름
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "jumin_number")
+    // 고객 주민번호, 고유해야 함
+    @Column(name = "jumin_number", nullable = false, unique = true)
     private String juminNumber;
 
-    @Column(name = "gender")
+    // 고객 성별 (예: M/F)
+    @Column(name = "gender", nullable = false)
     private String gender;
 
-    @Column(name = "phone")
+    // 고객 전화번호, 고유해야 함
+    @Column(name = "phone", nullable = false, unique = true)
     private String phoneNum;
 
-    @Column(name = "address")
+    // 고객 주소
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "birth")
+    // 고객 생년월일
+    @Column(name = "birth", nullable = false)
     private LocalDate birth;
 
+    // 동일인 식별 코드
     @Column(name = "identiy")
     private LocalDate identiyCode;
 }
