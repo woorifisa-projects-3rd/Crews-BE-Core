@@ -26,5 +26,4 @@ public class CoreTransaction extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private StatusType status;
-
 }

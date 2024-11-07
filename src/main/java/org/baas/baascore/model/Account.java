@@ -7,6 +7,8 @@ import org.baas.baascore.util.BaseTimeEntity;
 import org.baas.baascore.util.CurrencyType;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /***
  * Baas Core 의 계좌 엔티티
@@ -53,5 +55,9 @@ public class Account extends BaseTimeEntity {
     // 클라이언트(서비스)와 사용자(고객) 쌍의 식별번호
     @Column(name = "fintech_use_num",nullable = false, unique = true)
     private String fintechUseNum;
+
+    // 한 계좌가 여러 카드를 소유할 수 있도록 양방향 매핑
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    private List<Card> cards = new ArrayList<>();
 
 }

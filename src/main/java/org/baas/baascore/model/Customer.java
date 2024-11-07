@@ -5,6 +5,8 @@ import lombok.Getter;
 import org.baas.baascore.util.BaseTimeEntity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 고객 정보를 관리하는 Customer 엔티티
@@ -49,4 +51,9 @@ public class Customer extends BaseTimeEntity {
     // 동일인 식별 코드
     @Column(name = "identiy")
     private String identiyCode;
+
+    // 한 고객이 여러 계좌를 소유할 수 있도록 양방향 매핑 추가
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private List<Account> accounts = new ArrayList<>();
+
 }

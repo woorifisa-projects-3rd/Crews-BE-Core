@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.baas.baascore.util.BaseTimeEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 은행 정보를 저장하는 BankCode 엔티티
  */
@@ -24,4 +27,10 @@ public class Bank extends BaseTimeEntity {
     @Column(name = "name", nullable = false)
     private String bankName;
 
+    // 해당 은행사의 상품 리스트
+    @OneToMany(mappedBy = "bank", fetch = FetchType.LAZY)
+    private List<Product> products = new ArrayList<>();
+    // 각 은행이 서비스중인 api 구독 서비스 리스트
+    @OneToMany(mappedBy = "bank", fetch = FetchType.LAZY)
+    private List<Subscribe> subscriptions = new ArrayList<>();
 }
