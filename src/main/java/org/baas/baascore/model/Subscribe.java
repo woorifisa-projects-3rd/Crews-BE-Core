@@ -27,7 +27,7 @@ public class Subscribe extends BaseTimeEntity {
     private Long id;
 
     // 상품 주인 은행 (은행:상품 1:N)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Bank bank;
 
     // 구독상품명

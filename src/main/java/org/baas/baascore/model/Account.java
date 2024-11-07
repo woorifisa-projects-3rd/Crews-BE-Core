@@ -22,13 +22,13 @@ public class Account extends BaseTimeEntity {
 
     // 한 고객은 여러 계좌를 소유할수있음
     // 계좌 소유 고객 정보
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
     private Customer customer;
 
     // 한 계좌는 하나의 은행 코드와만 연결됨
     // 계좌가 소속된 은행 정보
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bank_code_id", referencedColumnName = "id", nullable = false)
     private Bank bank;
 

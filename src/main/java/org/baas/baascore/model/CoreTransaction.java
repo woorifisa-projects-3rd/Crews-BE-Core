@@ -18,7 +18,7 @@ public class CoreTransaction extends BaseTimeEntity {
     private Long id;
 
     // 트랜잭션과 연결된 거래 내역 정보
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_history_id", nullable = false)
     private History history;
 
