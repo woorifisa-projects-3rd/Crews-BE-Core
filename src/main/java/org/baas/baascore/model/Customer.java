@@ -49,8 +49,8 @@ public class Customer extends BaseTimeEntity {
     private LocalDate birth;
 
     // 동일인 식별 코드
-    @Column(name = "identiy")
-    private String identiyCode;
+    @Column(name = "identity")
+    private String identityCode;
 
     // 한 고객이 여러 계좌를 소유할 수 있도록 양방향 매핑 추가
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)

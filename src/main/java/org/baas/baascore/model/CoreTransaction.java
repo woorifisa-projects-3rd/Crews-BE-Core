@@ -20,7 +20,7 @@ public class CoreTransaction extends BaseTimeEntity {
     // 트랜잭션과 연결된 거래 내역 정보
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_history_id", nullable = false)
-    private History history;
+    private TransactionHistory tranHistory;
 
     // 트랜잭션 상태 (예: 성공, 실패 등)
     @Enumerated(EnumType.STRING)

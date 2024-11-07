@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Getter
 @Entity
 @Table(name = "core_history")
-public class History extends BaseTimeEntity {
+public class TransactionHistory extends BaseTimeEntity {
     // 거래 기록의 고유 식별자
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,10 +53,5 @@ public class History extends BaseTimeEntity {
     // 거래 설명, 최대 50자 (선택적 필드)
     @Column(name = "description", nullable = true, length = 50)
     private String description;
-
-
-    @OneToOne(mappedBy = "history", fetch = FetchType.LAZY)
-    private CoreTransaction transaction;
-
 
 }
