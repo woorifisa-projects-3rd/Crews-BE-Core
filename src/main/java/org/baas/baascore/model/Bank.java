@@ -15,6 +15,11 @@ public class Bank {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 은행 코드 (예: 020, 090)
+    @Column(name = "code", nullable = false)
+    private String bankCode;
+
+
     // 은행 이름 (예: 하나은행, 국민은행)
     @Column(name = "name", nullable = false)
     private String bankName;

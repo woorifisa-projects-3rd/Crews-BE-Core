@@ -1,6 +1,7 @@
 package org.baas.baascore.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import org.baas.baascore.util.AccountType;
 import org.baas.baascore.util.BaseTimeEntity;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
  */
 @Getter
 @Entity
+@Builder
 @Table(name = "core_account")
 public class Account extends BaseTimeEntity {
     // 계좌의 고유 식별자

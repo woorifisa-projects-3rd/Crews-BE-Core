@@ -2,6 +2,7 @@ package org.baas.baascore.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.baas.baascore.dto.AccountIssuedRequest;
 import org.baas.baascore.util.BaseTimeEntity;
 
 import java.time.LocalDate;
@@ -48,5 +49,5 @@ public class Customer extends BaseTimeEntity {
 
     // 동일인 식별 코드
     @Column(name = "identiy")
-    private LocalDate identiyCode;
+    private String identiyCode;
 }
