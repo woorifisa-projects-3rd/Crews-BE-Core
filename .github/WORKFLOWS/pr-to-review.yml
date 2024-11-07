@@ -8,9 +8,9 @@ jobs:
   move_to_review:
     runs-on: ubuntu-latest
     steps:
-      - name: Move linked issue to '리뷰' column
+      - name: Move linked issue to 'Review' column
         uses: actions/add-to-project@v0.2.1
         with:
           project-url: '<Project_URL>'
-          column-name: '리뷰'
+          column-name: 'Review'
           token: ${{ secrets.GITHUB_TOKEN }}

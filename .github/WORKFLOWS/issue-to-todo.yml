@@ -8,9 +8,9 @@ jobs:
   move_to_todo:
     runs-on: ubuntu-latest
     steps:
-      - name: Move issue to '할 일' column
+      - name: Move issue to 'To Do' column
         uses: actions/add-to-project@v0.2.1
         with:
           project-url: '<Project_URL>'
-          column-name: '할 일'
+          column-name: 'To Do'
           token: ${{ secrets.GITHUB_TOKEN }}

@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.label.name == 'in progress'
     steps:
-      - name: Move issue to '진행중' column
+      - name: Move issue to 'In Progress' column
         uses: actions/add-to-project@v0.2.1
         with:
           project-url: '<Project_URL>'
-          column-name: '진행중'
+          column-name: 'In Progress'
           token: ${{ secrets.GITHUB_TOKEN }}
