@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.UUID;
@@ -100,19 +99,10 @@ public class Subscribe extends BaseTimeEntity {
 
         // 액세스 키와 시크릿 키 생성 및 설정
         String accessKey = UUID.randomUUID().toString();
-        String secretKey = generateSecretKey();
-
+        String secretKey = UUID.randomUUID().toString();
         subscribe.assignKeys(accessKey, secretKey);
 
         return subscribe;
-    }
-
-    // 시크릿 키 생성 메서드
-    private static String generateSecretKey() {
-        SecureRandom secureRandom = new SecureRandom();
-        byte[] key = new byte[32]; // 256비트 키
-        secureRandom.nextBytes(key);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(key);
     }
 
     // 시크릿 키 해시화 메서드

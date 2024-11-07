@@ -5,7 +5,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
-import org.baas.baascore.service.SubscribeService;
+import org.baas.baascore.repository.SubscribeRepository;
+import org.baas.baascore.util.SecurityUtils;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,12 +22,13 @@ import java.util.List;
 @Component
 public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
 
-    private final SubscribeService subscribeService;
+    private final SubscribeRepository subscribeRepository;
 
-    // 생성자 주입을 사용하여 SubscribeService 주입
-    public ApiKeyAuthenticationFilter(SubscribeService subscribeService) {
-        this.subscribeService = subscribeService;
+    // SubscribeRepository 주입
+    public ApiKeyAuthenticationFilter(SubscribeRepository subscribeRepository) {
+        this.subscribeRepository = subscribeRepository;
     }
+
 
     // 인증이 필요 없는 경로를 지정
     private static final List<String> EXCLUDE_URLS = Arrays.asList(
@@ -54,7 +56,7 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
         String secretKey = request.getHeader("X-SECRET-KEY");
 
         if (accessKey != null && secretKey != null) {
-            if (subscribeService.validateKeys(accessKey, secretKey)) {
+            if (SecurityUtils.validateKeys(accessKey, secretKey, subscribeRepository)) {
                 // 인증 성공 시 SecurityContext에 인증 정보 설정
                 Authentication auth = new UsernamePasswordAuthenticationToken(accessKey, null, Collections.emptyList());
                 SecurityContextHolder.getContext().setAuthentication(auth);
