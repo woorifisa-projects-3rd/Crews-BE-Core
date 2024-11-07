@@ -1,6 +1,5 @@
 package org.baas.baascore.util;
 
-import lombok.RequiredArgsConstructor;
 import org.baas.baascore.excaption.ErrorCode;
 import org.baas.baascore.excaption.HashingAlgorithmNotFoundException;
 import org.baas.baascore.model.Subscribe;
@@ -12,12 +11,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+
 public class SecurityUtils {
     private SecurityUtils() {
         throw new UnsupportedOperationException("Utility class");
     }
-    private final SubscribeRepository subscribeRepository;
+
 
     // SHA-256 해시화 메서드
     public static String hashSecretKey(String secretKey) {
