@@ -97,6 +97,7 @@ public class SubscribeService {
 
     // 유효한 사업자등록번호인지 확인하는 메서드
     private boolean isValidBusinessNumber(String businessNum) {
+        // 사업자등록번호가 10자리 숫자로 구성되어 있는지 확인
         return businessNum != null && businessNum.matches("\\d{10}");
     }
 }
