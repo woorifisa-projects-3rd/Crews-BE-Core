@@ -12,6 +12,6 @@ jobs:
       - name: Move linked issue to 'Done' column
         uses: actions/add-to-project@v0.2.1
         with:
-          project-url: '<Project_URL>'
+          project-url: 'https://github.com/orgs/woorifisa-projects-3rd/projects/6'
           column-name: 'Done'
           token: ${{ secrets.GITHUB_TOKEN }}
