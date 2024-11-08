@@ -13,19 +13,19 @@ import java.math.BigDecimal;
 @Getter
 @Entity
 @Table(name = "core_history")
-public class History extends BaseTimeEntity {
+public class TransactionHistory extends BaseTimeEntity {
     // 거래 기록의 고유 식별자
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // 거래가 발생한 계좌
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "core_account_id", nullable = false)
     private Account account;
 
-    // 카드가 연관된 경우 해당 카드 정보
-    @OneToOne
+    // 카드가 연관된 경우 해당 카드 정보 (선택적 필드)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "core_card", nullable = true)
     private Card card;
 
@@ -50,7 +50,8 @@ public class History extends BaseTimeEntity {
     @Column(name = "withdraw_account_num", nullable = true)
     private String withdrawAccountNum;
 
-    // 거래 설명, 최대 50자
+    // 거래 설명, 최대 50자 (선택적 필드)
     @Column(name = "description", nullable = true, length = 50)
     private String description;
+
 }

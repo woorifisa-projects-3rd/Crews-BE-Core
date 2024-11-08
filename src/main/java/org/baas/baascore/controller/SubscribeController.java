@@ -10,4 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/subscriptions")
 public class SubscribeController {
     private final SubscribeService subscribeService;
+
+
 }
