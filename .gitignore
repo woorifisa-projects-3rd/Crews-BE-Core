@@ -40,3 +40,5 @@ out/
 application.properties
 application-dev.properties
 application-prod.properties
+# Ignore testCodeFile
+/src/main/java/org/baas/baascore/controller/TestController.java

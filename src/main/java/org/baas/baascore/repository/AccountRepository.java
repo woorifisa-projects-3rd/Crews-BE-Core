@@ -14,4 +14,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findByAccountNumber(String accountNumber);
     Optional<Account> findByFintechUseNum(String fintechUseNum);
     List<Account> findByCustomerAndIsDeletedAndAccountType(Customer customer, boolean isDeleted, AccountType accountType);
+    List<Account> findByCustomerId(Long customerId);
+
 }
