@@ -127,6 +127,7 @@ public class AccountService {
     }
 
     public List<AccountInitResponseDto> findAccountInit(MemberInitRequestDto memberInitRequestDto) {
+        log.info("{}   {}  {}",memberInitRequestDto,memberInitRequestDto.getName(),memberInitRequestDto.getPhoneNumber());
         // Optional을 사용해 고객을 찾고 예외를 던지도록 간결화
         Customer customer = customerRepository.findByNameAndPhoneNum(
                 memberInitRequestDto.getName(),
