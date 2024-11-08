@@ -56,4 +56,10 @@ public class Account extends BaseTimeEntity {
     @Column(name = "fintech_use_num",nullable = false, unique = true)
     private String fintechUseNum;
 
+    @Column(name = "is_deleted", columnDefinition = "boolean default false")
+    private boolean isDeleted;
+
+    public void accountDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 }

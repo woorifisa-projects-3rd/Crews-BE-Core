@@ -1,10 +1,9 @@
 package org.baas.baascore.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.baas.baascore.dto.AccountIssuedRequest;
-import org.baas.baascore.dto.AccountIssuedResponse;
-import org.baas.baascore.model.Account;
+import org.baas.baascore.dto.*;
 import org.baas.baascore.service.AccountService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -14,13 +13,31 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping
-    public AccountIssuedResponse accountIssued(@RequestBody AccountIssuedRequest accountIssuedRequest,
-                                               @RequestHeader("accessKey") String accessKey,
-                                               @RequestHeader("secretKey") String secretKey){
-        System.out.println("accountIssuedRequest = " + accountIssuedRequest);
-        if(!validateKeys(accessKey,secretKey))
-            throw new RuntimeException("accessKey와 secretKey를 확인 해 주세요");
-        return accountService.accountIssued(accountIssuedRequest);
+    public ResponseEntity<AccountIssuedResponse> accountIssued(@RequestBody AccountIssuedRequest accountIssuedRequest){
+        return ResponseEntity.ok().body(accountService.accountIssued(accountIssuedRequest));
 
     }
+
+    @DeleteMapping
+    public ResponseEntity<AccountDeleteResponse> accountDelete(@RequestBody AccountDeleteRequest accountDeleteRequest){
+        return ResponseEntity.ok().body(accountService.accountDelete(accountDeleteRequest));
+
+    }
+
+    @PostMapping("/info")
+    public ResponseEntity<AccountInfoResponse> accountInfo(@RequestBody AccountInfoRequest accountInfoRequest) {
+        accountService.accountInfo(accountInfoRequest);
+
+    }
+
+
+    @PostMapping("/fin-num")
+    public ResponseEntity<FintechNumResponse> fintechNum(@RequestBody FintechNumRequest fintechNumRequest){
+        return ResponseEntity.ok().body(accountService.fintechNum(fintechNumRequest));
+    }
+
+
+
+
+
 }
