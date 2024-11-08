@@ -26,7 +26,7 @@ public class AccountIssuedResponse {
     public static AccountIssuedResponse of(Account account){
         return AccountIssuedResponse.builder()
                 .memberName(account.getCustomer().getName())
-                .identiyCode(account.getCustomer().getIdentiyCode())
+                .identiyCode(account.getCustomer().getIdentityCode())
                 .accountType(account.getAccountType())
                 .bankCode(account.getBank().getBankCode())
                 .bankName(account.getBank().getBankName())

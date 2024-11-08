@@ -2,6 +2,7 @@ package org.baas.baascore.repository;
 
 import org.baas.baascore.model.Account;
 import org.baas.baascore.model.Customer;
+import org.baas.baascore.util.AccountType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +13,5 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findByAccountNumber(String accountNumber);
     Optional<Account> findByFintechUseNum(String fintechUseNum);
-    List<Account> findByCustomer(Customer customer);
+    List<Account> findByCustomerAndIsDeletedAndAccountType(Customer customer, boolean isDeleted, AccountType accountType);
 }

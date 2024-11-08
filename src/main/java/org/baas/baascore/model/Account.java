@@ -1,13 +1,17 @@
 package org.baas.baascore.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.baas.baascore.util.AccountType;
 import org.baas.baascore.util.BaseTimeEntity;
 import org.baas.baascore.util.CurrencyType;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /***
  * Baas Core 의 계좌 엔티티
@@ -15,6 +19,8 @@ import java.math.BigDecimal;
 @Getter
 @Entity
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "core_account")
 public class Account extends BaseTimeEntity {
     // 계좌의 고유 식별자
@@ -24,13 +30,13 @@ public class Account extends BaseTimeEntity {
 
     // 한 고객은 여러 계좌를 소유할수있음
     // 계좌 소유 고객 정보
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
     private Customer customer;
 
     // 한 계좌는 하나의 은행 코드와만 연결됨
     // 계좌가 소속된 은행 정보
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bank_code_id", referencedColumnName = "id", nullable = false)
     private Bank bank;
 
@@ -62,4 +68,7 @@ public class Account extends BaseTimeEntity {
     public void accountDeleted(boolean deleted) {
         isDeleted = deleted;
     }
+    // 한 계좌가 여러 카드를 소유할 수 있도록 양방향 매핑
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    private List<Card> cards = new ArrayList<>();
 }

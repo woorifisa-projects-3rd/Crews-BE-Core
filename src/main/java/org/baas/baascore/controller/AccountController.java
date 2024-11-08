@@ -26,7 +26,7 @@ public class AccountController {
 
     @PostMapping("/info")
     public ResponseEntity<AccountInfoResponse> accountInfo(@RequestBody AccountInfoRequest accountInfoRequest) {
-        accountService.accountInfo(accountInfoRequest);
+        return ResponseEntity.ok().body(accountService.accountInfo(accountInfoRequest));
 
     }
 

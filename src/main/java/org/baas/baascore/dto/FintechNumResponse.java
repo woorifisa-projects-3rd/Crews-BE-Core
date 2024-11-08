@@ -20,7 +20,7 @@ public class FintechNumResponse {
     public static FintechNumResponse of(Account account){
         return FintechNumResponse.builder()
                 .memberName(account.getCustomer().getName())
-                .identiyCode(account.getCustomer().getIdentiyCode())
+                .identiyCode(account.getCustomer().getIdentityCode())
                 .accountType(account.getAccountType())
                 .bankCode(account.getBank().getBankCode())
                 .bankName(account.getBank().getBankName())

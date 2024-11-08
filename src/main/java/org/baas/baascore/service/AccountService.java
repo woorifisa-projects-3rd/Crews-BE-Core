@@ -3,6 +3,7 @@ package org.baas.baascore.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.baas.baascore.dto.*;
+import org.baas.baascore.excaption.*;
 import org.baas.baascore.model.Account;
 import org.baas.baascore.model.Bank;
 import org.baas.baascore.model.Card;
@@ -18,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,12 +32,12 @@ public class AccountService {
     private final CardRepository cardRepository;
 
     public AccountIssuedResponse accountIssued(AccountIssuedRequest accountIssuedRequest){
-        Customer customer = customerRepository.findByIdentiyCode(accountIssuedRequest.getIdentiyCode()).orElseThrow(
-                () -> new RuntimeException("식별자번호가 맞지 않습니다.")
+        Customer customer = customerRepository.findByIdentityCode(accountIssuedRequest.getIdentiyCode()).orElseThrow(
+                IdentityCodeNotFoundException::new
         );
         String fintechUseNum = UUID.randomUUID().toString();
         Bank bank = bankRepository.findByBankCode("020").orElseThrow( //"020 - 우리은행 은행코드
-                () -> new RuntimeException("020 코드는 없는 은행 코드 입니다") );
+                BankNotFoundException::new);
         String accountNumber = getAccountNumber();
         BigDecimal balance = BigDecimal.ZERO;
         CurrencyType currencyType = CurrencyType.KRW;
@@ -47,48 +45,51 @@ public class AccountService {
         Account account = Account.builder().customer(customer).bank(bank).accountNumber(accountNumber).balance(balance)
                         .currencyType(currencyType).accountType(accountType).fintechUseNum(fintechUseNum).build();
         Account savedAccount = accountRepository.save(account);
-        log.info("생성된 계좌번호 : {}, 이름 {}, 식별자번호 {}", accountNumber, customer.getName(), customer.getIdentiyCode());
+        log.info("생성된 계좌번호 : {}, 이름 {}, 식별자번호 {}", accountNumber, customer.getName(), customer.getIdentityCode());
         return AccountIssuedResponse.of(savedAccount);
 
     }
 
     public AccountDeleteResponse accountDelete(AccountDeleteRequest accountDeleteRequest) {
-        Customer customer = customerRepository.findByIdentiyCode(accountDeleteRequest.getIdentiyCode()).orElseThrow(
-                () -> new RuntimeException("식별자번호가 맞지 않습니다.")
+        Customer customer = customerRepository.findByIdentityCode(accountDeleteRequest.getIdentiyCode()).orElseThrow(
+                IdentityCodeNotFoundException::new
         );
         Account account = accountRepository.findByFintechUseNum(accountDeleteRequest.getFintechUseNum()).orElseThrow(
-                () -> new RuntimeException("핀테크번호가 맞지 않습니다.")
+                FintechNumberNotFoundException::new
         );
         if(!customer.equals(account.getCustomer()))
             throw new RuntimeException("계좌주인과 서비스 요청 사람이 다릅니다.");
-        else if(!account.getBalance().equals(BigDecimal.ZERO))
+        else if(account.getBalance().compareTo(BigDecimal.ZERO) != 0)
             throw new RuntimeException("계좌 잔액이 남아있습니다. 잔액을 비워 주세요");
         account.accountDeleted(true);
         return AccountDeleteResponse.of(account.isDeleted());
     }
 
     public AccountInfoResponse accountInfo(AccountInfoRequest accountInfoRequest) {
-        Customer customer = customerRepository.findByIdentiyCode(accountInfoRequest.getIdentiyCode()).orElseThrow(
-                () -> new RuntimeException("식별자번호가 맞지 않습니다.")
+        Customer customer = customerRepository.findByIdentityCode(accountInfoRequest.getIdentiyCode()).orElseThrow(
+                IdentityCodeNotFoundException::new
         );
-        List<Account> AccountList = accountRepository.findByCustomer(customer);
-        List<Card> byCustomer = cardRepository.findByCustomer(customer);
+        List<Account> accountList = accountRepository.findByCustomerAndIsDeletedAndAccountType(customer, false, AccountType.PERSONAL);
+        List<Card> cardList = cardRepository.findByCustomerAndCardStatusTrue(customer);
 
-        //TODO: dto로 변경하기
-        AccountInfoResponse.builder().
+
+        List<AccountIssuedResponse> changedAccountList = accountList.stream().map(AccountIssuedResponse::of).toList();
+        List<CardListDTO> chagedCardList = cardList.stream().map(CardListDTO::of).toList();
+        return AccountInfoResponse.builder().accountList(changedAccountList).cardList(chagedCardList).build();
+
     }
 
     public FintechNumResponse fintechNum(FintechNumRequest fintechNumRequest) {
-        Customer customer = customerRepository.findByIdentiyCode(fintechNumRequest.getIdentiyCode()).orElseThrow(
-                () -> new RuntimeException("식별자번호가 맞지 않습니다.")
+        Customer customer = customerRepository.findByIdentityCode(fintechNumRequest.getIdentiyCode()).orElseThrow(
+                IdentityCodeNotFoundException::new
         );
 
         String accountNumber = fintechNumRequest.getAccountNumber();
         Account account = accountRepository.findByAccountNumber(accountNumber).orElseThrow(
-                () -> new RuntimeException("계좌번호가 맞지 않습니다.")
+                AccountNumberNotFoundException::new
         );
         if(!customer.equals(account.getCustomer()))
-            throw new RuntimeException("계좌주인과 서비스 요청 사람이 다릅니다.");
+            throw new MemberNotEqualsException();
 
         return FintechNumResponse.of(account);
 
@@ -100,7 +101,7 @@ public class AccountService {
         if(optionalAccount.isEmpty()){
             return accountNumber;
         }
-        throw new RuntimeException("중복된 계좌번호가 생성되었습니다.");
+        throw new AccountDuplicatedException();
     }
 
     private String createAccountNumber() {

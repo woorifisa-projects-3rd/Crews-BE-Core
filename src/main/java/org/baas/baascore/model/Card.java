@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.baas.baascore.util.BaseTimeEntity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 
 /**
@@ -19,12 +21,12 @@ public class Card extends BaseTimeEntity {
     private Long id;
 
     // 카드 소유주
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
     // 카드를 소유한 계좌, 반드시 존재해야 함
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
@@ -46,9 +48,9 @@ public class Card extends BaseTimeEntity {
 
     // 카드 만료일 (MM/YY 형식)
     @Column(name = "expired_at", nullable = false)
-    private YearMonth expired_at;
+    private LocalDateTime expiredAt;
 
     // 카드 활성 상태 (활성화 또는 비활성화)
-    @Column(name = "card_status", nullable = false)
+    @Column(name = "card_status", nullable = false, columnDefinition = "TINYINT(1)")
     private boolean cardStatus;
 }
