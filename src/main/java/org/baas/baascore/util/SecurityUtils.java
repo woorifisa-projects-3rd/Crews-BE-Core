@@ -1,5 +1,6 @@
 package org.baas.baascore.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.baas.baascore.excaption.ErrorCode;
 import org.baas.baascore.excaption.HashingAlgorithmNotFoundException;
 import org.baas.baascore.model.Subscribe;
@@ -11,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Optional;
 
-
+@Slf4j
 public class SecurityUtils {
     private SecurityUtils() {
         throw new UnsupportedOperationException("Utility class");
@@ -40,6 +41,7 @@ public class SecurityUtils {
 
         if (optionalSubscribe.isPresent()) {
             Subscribe subscribe = optionalSubscribe.get();
+            log.info("이건가 {}",subscribe.getSecretKeyHash());
             String hashedInputSecretKey = hashSecretKey(secretKey);
             return subscribe.getSecretKeyHash().equals(hashedInputSecretKey);
         }
