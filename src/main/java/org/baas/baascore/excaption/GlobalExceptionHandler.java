@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(IdentityCodeNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleIdentityCodeNotFoundException(BankNotFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleIdentityCodeNotFoundException(IdentityCodeNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponse.builder()
                 .errorCode(ex.getErrorCode().name())
                 .message(ex.getErrorCode().getMessage())
@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(FintechNumberNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleFintechCodeNotFoundException(BankNotFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleFintechCodeNotFoundException(FintechNumberNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponse.builder()
                 .errorCode(ex.getErrorCode().name())
                 .message(ex.getErrorCode().getMessage())
@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MemberNotEqualsException.class)
-    public ResponseEntity<ErrorResponse> handleMemberNotEqualsException(BankNotFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleMemberNotEqualsException(MemberNotEqualsException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponse.builder()
                 .errorCode(ex.getErrorCode().name())
                 .message(ex.getErrorCode().getMessage())
@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BalanceNotZeroException.class)
-    public ResponseEntity<ErrorResponse> handleBalanceNotZeroException(BankNotFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleBalanceNotZeroException(BalanceNotZeroException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponse.builder()
                 .errorCode(ex.getErrorCode().name())
                 .message(ex.getErrorCode().getMessage())
@@ -82,7 +82,7 @@ public class GlobalExceptionHandler {
                 .build());
     }
     @ExceptionHandler(AccountNumberNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleAccountNumberNotFoundException(BankNotFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleAccountNumberNotFoundException(AccountNumberNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponse.builder()
                 .errorCode(ex.getErrorCode().name())
                 .message(ex.getErrorCode().getMessage())
@@ -92,7 +92,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AccountDuplicatedException.class)
-    public ResponseEntity<ErrorResponse> handleAccountNumberDuplicatedException(BankNotFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleAccountNumberDuplicatedException(AccountDuplicatedException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponse.builder()
+                .errorCode(ex.getErrorCode().name())
+                .message(ex.getErrorCode().getMessage())
+                .details(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build());
+    }
+
+    @ExceptionHandler(CardDuplicatedException.class)
+    public ResponseEntity<ErrorResponse> handleCardNumberDuplicatedException(CardDuplicatedException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponse.builder()
                 .errorCode(ex.getErrorCode().name())
                 .message(ex.getErrorCode().getMessage())

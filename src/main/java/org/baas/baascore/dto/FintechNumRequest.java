@@ -9,7 +9,7 @@ import lombok.Getter;
 public class FintechNumRequest {
 
     @NotBlank
-    private String identiyCode;
+    private String identityCode;
 
     @NotBlank
     @Min(10) @Max(14)

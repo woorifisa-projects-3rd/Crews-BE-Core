@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class AccountIssuedResponse {
     private String memberName;
-    private String identiyCode;
+    private String identityCode;
     private AccountType accountType;
     private String bankCode;
     private String bankName;
@@ -20,13 +20,13 @@ public class AccountIssuedResponse {
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
     private BigDecimal balance;
-    private String finUseNum;
+    private String fintechUseNum;
 
 
-    public static AccountIssuedResponse of(Account account){
+    public static AccountIssuedResponse from(Account account){
         return AccountIssuedResponse.builder()
                 .memberName(account.getCustomer().getName())
-                .identiyCode(account.getCustomer().getIdentityCode())
+                .identityCode(account.getCustomer().getIdentityCode())
                 .accountType(account.getAccountType())
                 .bankCode(account.getBank().getBankCode())
                 .bankName(account.getBank().getBankName())
@@ -34,7 +34,7 @@ public class AccountIssuedResponse {
                 .createAt(account.getCreatedAt())
                 .updateAt(account.getUpdatedAt())
                 .balance(account.getBalance())
-                .finUseNum(account.getFintechUseNum())
+                .fintechUseNum(account.getFintechUseNum())
                 .build();
     }
 }
