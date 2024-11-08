@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.baas.baascore.util.BaseTimeEntity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 
 /**
@@ -46,9 +48,9 @@ public class Card extends BaseTimeEntity {
 
     // 카드 만료일 (MM/YY 형식)
     @Column(name = "expired_at", nullable = false)
-    private YearMonth expiredAt;
+    private LocalDateTime expiredAt;
 
     // 카드 활성 상태 (활성화 또는 비활성화)
-    @Column(name = "card_status", nullable = false)
+    @Column(name = "card_status", nullable = false, columnDefinition = "TINYINT(1)")
     private boolean cardStatus;
 }

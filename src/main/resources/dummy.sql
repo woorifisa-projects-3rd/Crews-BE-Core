@@ -84,16 +84,16 @@ VALUES
     (2, 'customer2@example.com', '김영희', '9202022345678', 'F', '010-2345-6789', '서울시 서초구', '1992-02-02', 'ID002');
 
 -- Account 데이터 삽입
-INSERT INTO core_account (id, customer_id, bank_code_id, account_number, balance, currency, account_type, fintech_use_num)
+INSERT INTO core_account (id, customer_id, bank_code_id, account_number, balance, currency, account_type, fintech_use_num, is_deleted)
 VALUES
-    (1, 1, 1, '110-1234-5678', 1000000, 'KRW', 'PERSONAL', 'FNUM001'),
-    (2, 2, 2, '120-2345-6789', 2000000, 'KRW', 'PERSONAL', 'FNUM002');
+    (1, 1, 1, '110-1234-5678', 1000000, 'KRW', 'PERSONAL', 'FNUM001', FALSE),
+    (2, 2, 2, '120-2345-6789', 2000000, 'KRW', 'PERSONAL', 'FNUM002', FALSE);
 
 -- Card 데이터 삽입
 INSERT INTO core_card (id, customer_id, account_id, card_name, card_number, cvc, is_issued, expired_at, card_status)
 VALUES
-    (1, 1, 1, '하나카드', '4862-1234-5678-9012', '123', TRUE, '2025-12', TRUE),
-    (2, 2, 2, '국민카드', '4862-2345-6789-0123', '456', TRUE, '2026-06', TRUE);
+    (1, 1, 1, '하나카드', '4862-1234-5678-9012', '123', TRUE, '2025-11-07 00:00:00', TRUE),
+    (2, 2, 2, '국민카드', '4862-2345-6789-0123', '456', TRUE, '2025-11-07 00:00:00', TRUE);
 
 -- Product 데이터 삽입
 INSERT INTO bank_product (id, bank_id, name, rate)

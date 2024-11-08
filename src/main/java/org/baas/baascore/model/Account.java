@@ -1,7 +1,10 @@
 package org.baas.baascore.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.baas.baascore.util.AccountType;
 import org.baas.baascore.util.BaseTimeEntity;
 import org.baas.baascore.util.CurrencyType;
@@ -15,6 +18,9 @@ import java.util.List;
  */
 @Getter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "core_account")
 public class Account extends BaseTimeEntity {
     // 계좌의 고유 식별자
@@ -56,8 +62,13 @@ public class Account extends BaseTimeEntity {
     @Column(name = "fintech_use_num",nullable = false, unique = true)
     private String fintechUseNum;
 
+    @Column(name = "is_deleted", columnDefinition = "boolean default false")
+    private boolean isDeleted;
+
+    public void accountDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
     // 한 계좌가 여러 카드를 소유할 수 있도록 양방향 매핑
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<Card> cards = new ArrayList<>();
-
 }
