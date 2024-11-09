@@ -9,23 +9,23 @@ import org.baas.baascore.util.AccountType;
 @Builder
 public class FintechNumResponse {
     private String memberName;
-    private String identiyCode;
+    private String identityCode;
     private AccountType accountType;
     private String bankCode;
     private String bankName;
     private String accountNumber;
-    private String finUseNum;
+    private String fintechUseNum;
 
 
-    public static FintechNumResponse of(Account account){
+    public static FintechNumResponse from(Account account){
         return FintechNumResponse.builder()
                 .memberName(account.getCustomer().getName())
-                .identiyCode(account.getCustomer().getIdentityCode())
+                .identityCode(account.getCustomer().getIdentityCode())
                 .accountType(account.getAccountType())
                 .bankCode(account.getBank().getBankCode())
                 .bankName(account.getBank().getBankName())
                 .accountNumber(account.getAccountNumber())
-                .finUseNum(account.getFintechUseNum())
+                .fintechUseNum(account.getFintechUseNum())
                 .build();
     }
 }

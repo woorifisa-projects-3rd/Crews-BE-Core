@@ -1,5 +1,8 @@
 package org.baas.baascore.excaption;
 
+import lombok.Getter;
+
+@Getter
 public class AccountDuplicatedException extends RuntimeException {
     private final ErrorCode errorCode;
 

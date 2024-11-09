@@ -8,7 +8,7 @@ import lombok.Getter;
 public class AccountDeleteResponse {
     private String message;
 
-    public static AccountDeleteResponse of(boolean isDeleted){
+    public static AccountDeleteResponse from(boolean isDeleted){
         String message = "";
         if(isDeleted){
             message = "계좌 삭제가 완료되었습니다.";

@@ -1,5 +1,8 @@
 package org.baas.baascore.excaption;
 
+import lombok.Getter;
+
+@Getter
 public class MemberNotEqualsException extends RuntimeException{
     private final ErrorCode errorCode;
 

@@ -40,7 +40,6 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
             "/v3/api-docs",
             "/v3/api-docs/",
             "/swagger-resources/"
-
     );
 
     @Override

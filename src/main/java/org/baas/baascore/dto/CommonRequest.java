@@ -1,11 +1,16 @@
 package org.baas.baascore.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class AccountIssuedRequest {
+@Builder
+public class CommonRequest {
 
     @NotBlank
     private String identityCode;
+
+    @NotBlank
+    private String fintechUseNum;
 }

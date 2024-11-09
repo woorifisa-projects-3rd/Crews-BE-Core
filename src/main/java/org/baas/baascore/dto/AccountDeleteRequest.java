@@ -8,7 +8,7 @@ import lombok.Getter;
 @Builder
 public class AccountDeleteRequest {
     @NotBlank
-    private String identiyCode;
+    private String identityCode;
 
     @NotBlank
     private String fintechUseNum;

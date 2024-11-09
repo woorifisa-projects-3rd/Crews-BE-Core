@@ -17,7 +17,7 @@ public class CardListDTO {
     private LocalDateTime updateAt;
     private String cardNumber;
 
-    public static CardListDTO of(Card card){
+    public static CardListDTO from(Card card){
         return CardListDTO.builder()
                 .memberName(card.getCustomer().getName())
                 .bankCode(card.getAccount().getBank().getBankCode())
