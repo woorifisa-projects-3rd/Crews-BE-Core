@@ -56,8 +56,6 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String accessKey = request.getHeader("X-ACCESS-KEY");
         String secretKey = request.getHeader("X-SECRET-KEY");
-
-
         if (accessKey != null && secretKey != null) {
             if (SecurityUtils.validateKeys(accessKey, secretKey, subscribeRepository)) {
                 // 인증 성공 시 SecurityContext에 인증 정보 설정

@@ -41,7 +41,6 @@ public class SecurityUtils {
 
         if (optionalSubscribe.isPresent()) {
             Subscribe subscribe = optionalSubscribe.get();
-            log.info("이건가 {}",subscribe.getSecretKeyHash());
             String hashedInputSecretKey = hashSecretKey(secretKey);
             return subscribe.getSecretKeyHash().equals(hashedInputSecretKey);
         }

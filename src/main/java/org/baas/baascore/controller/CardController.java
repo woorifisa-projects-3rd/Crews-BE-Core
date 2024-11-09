@@ -3,7 +3,6 @@ package org.baas.baascore.controller;
 import lombok.RequiredArgsConstructor;
 import org.baas.baascore.dto.CardIssuedResponse;
 import org.baas.baascore.dto.CommonRequest;
-import org.baas.baascore.dto.IdentityRequest;
 import org.baas.baascore.service.CardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

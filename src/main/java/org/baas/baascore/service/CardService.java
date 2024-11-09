@@ -3,7 +3,6 @@ package org.baas.baascore.service;
 import lombok.RequiredArgsConstructor;
 import org.baas.baascore.dto.CardIssuedResponse;
 import org.baas.baascore.dto.CommonRequest;
-import org.baas.baascore.excaption.AccountDuplicatedException;
 import org.baas.baascore.excaption.CardDuplicatedException;
 import org.baas.baascore.excaption.FintechNumberNotFoundException;
 import org.baas.baascore.excaption.IdentityCodeNotFoundException;
@@ -17,7 +16,6 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
@@ -25,6 +23,8 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class CardService {
+    private static final Random RANDOM = new Random(); // Random 객체를 static 멤버 변수로 선언하여 재사용
+
     private final CardRepository cardRepository;
     private final CustomerRepository customerRepository;
     private final AccountRepository accountRepository;
@@ -63,16 +63,13 @@ public class CardService {
     }
 
     private String createNumber(int count, String prefix) {
-        Random random = new Random();
-        int createNum = 0;
-        String ranNum = "";
-        String randomNum = "";
+        StringBuilder randomNum = new StringBuilder();
+        randomNum.append(prefix);
         for (int i = 0; i < count; i++) {
-            createNum = random.nextInt(9);
-            ranNum = Integer.toString(createNum);
-            randomNum += ranNum;
+            int createNum = RANDOM.nextInt(10); // 0~9 사이의 랜덤 숫자 생성
+            randomNum.append(createNum);
         }
-        String accountNum = prefix + randomNum;
-        return accountNum;
+        return randomNum.toString();
     }
+
 }

@@ -20,4 +20,8 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Override
     @EntityGraph(attributePaths = {"customer","bank"})
     Account save(Account account);
+
+    @EntityGraph(attributePaths = {"customer", "bank"})
+    List<Account> findByCustomerId(Long customerId);
+
 }

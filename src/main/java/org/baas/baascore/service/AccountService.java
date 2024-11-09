@@ -19,13 +19,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
 public class AccountService {
+    private static final Random RANDOM = new Random(); // Random 객체를 static 멤버 변수로 선언하여 재사용
+    private static final String ONLY_BANK_NUM = "1002"; // 우리은행 계좌번호 앞자리 4글자
+
     private final AccountRepository accountRepository;
     private final BankRepository bankRepository;
     private final CustomerRepository customerRepository;
@@ -43,7 +49,7 @@ public class AccountService {
         CurrencyType currencyType = CurrencyType.KRW;
         AccountType accountType = AccountType.CREW;
         Account account = Account.builder().customer(customer).bank(bank).accountNumber(accountNumber).balance(balance)
-                        .currencyType(currencyType).accountType(accountType).fintechUseNum(fintechUseNum).build();
+                .currencyType(currencyType).accountType(accountType).fintechUseNum(fintechUseNum).build();
         Account savedAccount = accountRepository.save(account);
         log.info("생성된 계좌번호 : {}, 이름 {}, 식별자번호 {}", accountNumber, customer.getName(), customer.getIdentityCode());
         return AccountIssuedResponse.from(savedAccount);
@@ -57,10 +63,10 @@ public class AccountService {
         Account account = accountRepository.findByFintechUseNum(accountDeleteRequest.getFintechUseNum()).orElseThrow(
                 FintechNumberNotFoundException::new
         );
-        if(!customer.equals(account.getCustomer()))
-            throw new RuntimeException("계좌주인과 서비스 요청 사람이 다릅니다.");
-        else if(account.getBalance().compareTo(BigDecimal.ZERO) != 0)
-            throw new RuntimeException("계좌 잔액이 남아있습니다. 잔액을 비워 주세요");
+        if (!customer.equals(account.getCustomer()))
+            throw new MemberNotEqualsException();
+        else if (account.getBalance().compareTo(BigDecimal.ZERO) != 0)
+            throw new BalanceNotZeroException();
         account.accountDeleted(true);
         return AccountDeleteResponse.from(account.isDeleted());
     }
@@ -88,34 +94,49 @@ public class AccountService {
         Account account = accountRepository.findByAccountNumber(accountNumber).orElseThrow(
                 AccountNumberNotFoundException::new
         );
-        if(!customer.equals(account.getCustomer()))
+        if (!customer.equals(account.getCustomer()))
             throw new MemberNotEqualsException();
 
         return FintechNumResponse.from(account);
 
     }
+
     @Retryable
     private String getAccountNumber() {
         String accountNumber = createAccountNumber();
         Optional<Account> optionalAccount = accountRepository.findByAccountNumber(accountNumber);
-        if(optionalAccount.isEmpty()){
+        if (optionalAccount.isEmpty()) {
             return accountNumber;
         }
         throw new AccountDuplicatedException();
     }
 
-    private String createAccountNumber() {
-        Random random = new Random();
-        int createNum = 0;
-        String ranNum = "";
-        String randomNum = "";
+    public static String createAccountNumber() {
+        StringBuilder randomNum = new StringBuilder();
         for (int i = 0; i < 9; i++) {
-            createNum = random.nextInt(9);
-            ranNum = Integer.toString(createNum);
-            randomNum += ranNum;
+            int createNum = RANDOM.nextInt(10); // 0~9 사이의 랜덤 숫자 생성
+            randomNum.append(createNum); // StringBuilder에 추가
         }
-        String onlyBankNum = "1002"; //우리은행 계좌번호 앞자리 4글자
-        String accountNum = onlyBankNum + randomNum;
-        return accountNum;
+        return ONLY_BANK_NUM + randomNum.toString(); // 은행 코드와 랜덤 번호 조합하여 반환
+    }
+
+    // 고객 ID로 모든 계좌 조회
+    public List<Account> findAccountsByCustomerId(Long customerId) {
+        // 고객 ID로 계좌 조회 후 반환
+        return accountRepository.findByCustomerId(customerId);
+    }
+
+    public List<AccountInitResponseDto> findAccountInit(MemberInitRequestDto memberInitRequestDto) {
+        log.info("{}   {}  {}",memberInitRequestDto,memberInitRequestDto.getName(),memberInitRequestDto.getPhoneNumber());
+        // Optional을 사용해 고객을 찾고 예외를 던지도록 간결화
+        Customer customer = customerRepository.findByNameAndPhoneNum(
+                memberInitRequestDto.getName(),
+                memberInitRequestDto.getPhoneNumber()
+        ).orElseThrow(() -> new IllegalStateException("해당 이름과 전화번호의 고객을 찾을 수 없습니다."));
+
+        // 고객 ID로 계좌 정보 찾기
+        return accountRepository.findByCustomerId(customer.getId()).stream()
+                .map(AccountInitResponseDto::fromEntity)
+                .toList();
     }
 }
