@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS subscribe
 (
     id           BIGINT PRIMARY KEY AUTO_INCREMENT,
     bank_id      BIGINT         NOT NULL,
-    product_name VARCHAR(255),
+    product_name VARCHAR(255)   NOT NULL,
     business_num VARCHAR(255)    NOT NULL,
     company_name VARCHAR(255)   NOT NULL,
     expire_date  DATETIME       NOT NULL,

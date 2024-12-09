@@ -182,7 +182,7 @@ VALUES (1, 1, 'API 구독 상품', '123-45-67890', '크루즈', '2025-11-07 00:0
         'KMq60SuylJxV6/zO7HY67FzQDTlQwjrBUnRJa8xCJMA=');
 
 -- History 데이터 삽입
-INSERT INTO core_history (id, core_account_id, core_card, tran_type, tran_amt, after_balance_amt, counterparty_Name,
+INSERT INTO core_history (id, core_account_id, core_card, tran_type, tran_amt, after_balance_amt, counterparty_name,
                           counterparty_account_num, counterparty_bank_code, description)
 VALUES (1, 1, 1, 'DEPOSIT', 500000, 1500000, '김치도가', '11012345678', '020', '월급 입금'),
        (2, 2, 2, 'WITHDRAW', 100000, 1900000, '편의점', '12023456789', '020', '편의점 결제');
